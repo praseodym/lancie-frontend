@@ -30,10 +30,8 @@
 
     <paper-card heading="Tickets">
       <div class="card-content layout horizontal wrap">
-        <template id="tickets" is="dom-repeat" items="[[tickets]]">
-          <div id="hideWrapper" hidden$="[[!_availableByIndex(index)]]">
-            <lancie-ticket-item ticket="[[item]]" basket="[[basket]]" color="[[_getColorClass(index)]]"></lancie-ticket-item>
-          </div>
+        <template id="tickets" is="dom-repeat" items="[[_availableItems(tickets)]]">
+          <lancie-ticket-item ticket="[[item]]" basket="[[basket]]" color="[[_getColorClass(index)]]"></lancie-ticket-item>
         </template>
       </div>
     </paper-card>
@@ -70,6 +68,10 @@
         console.log(this.tickets);
         console.log(this.tickets[index]);
         return this._available(this.tickets[index]);
+      },
+
+      _availableItems: function(items) {
+          return items.filter(this._available);
       },
 
       _available: function(ticket) {
