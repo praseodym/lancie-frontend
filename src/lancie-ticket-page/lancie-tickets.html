@@ -31,7 +31,9 @@
     <paper-card heading="Tickets">
       <div class="card-content layout horizontal wrap">
         <template id="tickets" is="dom-repeat" items="[[tickets]]">
-          <lancie-ticket-item ticket="[[item]]" basket="[[basket]]" color="[[_getColorClass(index)]]"></lancie-ticket-item>
+          <div id="hideWrapper" hidden$="[[!_availableByIndex(index)]]">
+            <lancie-ticket-item ticket="[[item]]" basket="[[basket]]" color="[[_getColorClass(index)]]"></lancie-ticket-item>
+          </div>
         </template>
       </div>
     </paper-card>
@@ -62,6 +64,22 @@
 
       _getColorClass: function(index) {
         return this.colors[index % this.colors.length];
+      },
+
+      _availableByIndex: function(index) {
+        console.log(this.tickets);
+        console.log(this.tickets[index]);
+        return this._available(this.tickets[index]);
+      },
+
+      _available: function(ticket) {
+        if (Date.now() > new Date(ticket.deadline)) {
+          return false;
+        }
+        if (ticket.limit === 0) {
+          return true;
+        }
+        return ticket.numberSold < ticket.limit;
       },
 
     });
