@@ -110,7 +110,11 @@
           this.fire('toast', {text: 'Profile updated successfully.'});
         } else {
           if (request.request.status === 409) {
-            this.fire('toast', {text: 'Displayname already in use.'});
+            if (request.request.xhr.response.message.indexOf('RFID') > -1) {
+              this.fire('toast', {text: 'Not allowed to change your birthday.'});
+            } else {
+              this.fire('toast', {text: 'Displayname already in use.'});
+            }
           } else {
             this.fire('toast', {text: 'Profile updated failed.'});
           }
