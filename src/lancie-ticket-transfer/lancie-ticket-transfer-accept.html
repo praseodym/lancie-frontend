@@ -8,12 +8,12 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../../bower_components/lancie-card/lancie-card.html">
-<link rel="import" href="../../bower_components/lancie-ajax/lancie-ajax.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../lancie-my-area/lancie-terms-of-service.html">
+<script type="module" src="../../../../lancie-card/lancie-card.js"></script>
+<script type="module" src="../../../../lancie-ajax/lancie-ajax.js"></script>
+<script type="module" src="../../../../@polymer/paper-button/paper-button.js"></script>
+<script type="module" src="../../../../@polymer/neon-animation/animations/scale-up-animation.js"></script>
+<script type="module" src="../../../../@polymer/neon-animation/animations/fade-out-animation.js"></script>
+<script type="module" src="../lancie-my-area/lancie-terms-of-service.js"></script>
 
 
 <dom-module id="lancie-ticket-transfer-accept">
@@ -54,44 +54,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </lancie-terms-of-service>
 
   </template>
-  <script>
-  'use strict';
+  <script type="module">
+import '../../../../lancie-card/lancie-card.js';
+import '../../../../lancie-ajax/lancie-ajax.js';
+import '../../../../@polymer/paper-button/paper-button.js';
+import '../../../../@polymer/neon-animation/animations/scale-up-animation.js';
+import '../../../../@polymer/neon-animation/animations/fade-out-animation.js';
+import '../lancie-my-area/lancie-terms-of-service.js';
+import { Polymer } from '../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+'use strict';
 
-  (function() {
-    Polymer({
-      is: 'lancie-ticket-transfer-accept',
-      properties: {
-        token: {
-          type: String,
-          value: ''
-        },
-        transferring: Boolean,
-        error: Boolean
-      },
-      attached: function() {
-        this.info = true;
-        this.transferring = false;
-        this.error = false;
-        this.token = window.location.href.split('token=')[1];
-      },
-      openDialog: function() {
-        this.$.termsOfService.open();
-      },
-      tryAcceptTicketTransfer: function() {
-        this.info = false;
-        this.transferring = true;
-        this.$.ajaxConfirmTicketTransfer.body = this.token;
-        this.$.ajaxConfirmTicketTransfer.generateRequest();
-      },
-      onAcceptTicketTransfer: function(event, r) {
-        this.transferring = false;
-        if (r.succeeded) {
-          this.fire('navigate', {page: 'transfer-success'});
-        } else {
-          this.error = true;
-        }
-      }
-    });
-  })();
-  </script>
+Polymer({
+  is: 'lancie-ticket-transfer-accept',
+  properties: {
+    token: {
+      type: String,
+      value: ''
+    },
+    transferring: Boolean,
+    error: Boolean
+  },
+  attached: function() {
+    this.info = true;
+    this.transferring = false;
+    this.error = false;
+    this.token = window.location.href.split('token=')[1];
+  },
+  openDialog: function() {
+    this.$.termsOfService.open();
+  },
+  tryAcceptTicketTransfer: function() {
+    this.info = false;
+    this.transferring = true;
+    this.$.ajaxConfirmTicketTransfer.body = this.token;
+    this.$.ajaxConfirmTicketTransfer.generateRequest();
+  },
+  onAcceptTicketTransfer: function(event, r) {
+    this.transferring = false;
+    if (r.succeeded) {
+      this.fire('navigate', {page: 'transfer-success'});
+    } else {
+      this.error = true;
+    }
+  }
+});
+</script>
 </dom-module>

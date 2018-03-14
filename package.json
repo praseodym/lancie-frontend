@@ -1,26 +1,35 @@
 {
-  "private": true,
-  "devDependencies": {
-    "dom5": "^2.1.0",
-    "fs-extra": "^4.0.1",
-    "glob": "^7.1.1",
-    "gulp": "^4.0.0",
-    "gulp-if": "^2.0.1",
-    "gulp-jshint": "^2.0.2",
-    "gulp-replace": "^0.6.1",
-    "jshint": "^2.9.5",
-    "jshint-stylish": "^2.0.0",
-    "plylog": "^0.5.0",
-    "polymer-analyzer": "^2.7.0",
-    "polyserve": "0.23.0",
-    "superagent": "^3.2.1"
+  "name": "@polymer/lancie-frontend",
+  "flat": true,
+  "version": "",
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "^1.0.0",
+    "@polymer/polymer": "^3.0.0-pre.1",
+    "@polymer/iron-flex-layout": "^3.0.0-pre.1",
+    "@polymer/iron-media-query": "^3.0.0-pre.1",
+    "@polymer/iron-icons": "^3.0.0-pre.1",
+    "@polymer/iron-icon": "^3.0.0-pre.1",
+    "@polymer/iron-image": "^3.0.0-pre.1",
+    "@polymer/paper-material": "^3.0.0-pre.1",
+    "@polymer/paper-button": "^3.0.0-pre.1",
+    "@polymer/paper-card": "^3.0.0-pre.1",
+    "@polymer/paper-styles": "^3.0.0-pre.1",
+    "@polymer/paper-checkbox": "^3.0.0-pre.1",
+    "@polymer/paper-input": "^3.0.0-pre.1",
+    "@polymer/paper-tabs": "^3.0.0-pre.1",
+    "@polymer/paper-listbox": "^3.0.0-pre.1",
+    "@polymer/paper-item": "^3.0.0-pre.1",
+    "@polymer/paper-toast": "^3.0.0-pre.1",
+    "@polymer/paper-tooltip": "^3.0.0-pre.1",
+    "@polymer/paper-progress": "^3.0.0-pre.1",
+    "@polymer/paper-dropdown-menu": "^3.0.0-pre.1",
+    "@polymer/paper-icon-button": "^3.0.0-pre.1",
+    "@polymer/paper-badge": "^3.0.0-pre.1",
+    "@polymer/app-layout": "^3.0.0-pre.1",
+    "@polymer/app-route": "^3.0.0-pre.1",
+    "@polymer/marked-element": "^3.0.0-pre.1",
+    "@polymer/iron-pages": "^3.0.0-pre.1",
+    "@polymer/app-storage": "^3.0.0-pre.1"
   },
-  "scripts": {
-    "build": "yarn checks && polymer build && gulp post-build",
-    "checks": "gulp",
-    "serve": "yarn checks && polyserve -p 5100 -P h2 --proxy-path api --proxy-target http://localhost:9000/api/"
-  },
-  "engines": {
-    "node": ">=5.0.0"
-  }
+  "devDependencies": {}
 }

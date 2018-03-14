@@ -1,7 +1,7 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/lancie-ajax/lancie-ajax.html">
-<link rel="import" href="../../bower_components/lancie-error/lancie-error.html">
-<link rel="import" href="../../bower_components/lancie-card/lancie-card.html">
+<script type="module" src="../../../../@polymer/polymer/polymer.js"></script>
+<script type="module" src="../../../../lancie-ajax/lancie-ajax.js"></script>
+<script type="module" src="../../../../lancie-error/lancie-error.js"></script>
+<script type="module" src="../../../../lancie-card/lancie-card.js"></script>
 
 <dom-module id="lancie-unsubscribe">
   <template>
@@ -20,49 +20,51 @@
     </lancie-card>
 
   </template>
-  <script>
-    (function () {
-      'use strict';
+  <script type="module">
+import '../../../../@polymer/polymer/polymer.js';
+import '../../../../lancie-ajax/lancie-ajax.js';
+import '../../../../lancie-error/lancie-error.js';
+import '../../../../lancie-card/lancie-card.js';
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
 
-      class LancieUnsubscribe extends Polymer.Element {
-        static get is() {
-          return 'lancie-unsubscribe';
-        }
+class LancieUnsubscribe extends Element {
+  static get is() {
+    return 'lancie-unsubscribe';
+  }
 
-        static get properties() {
-          return {
-            id: String,
-            success: Boolean
-          };
-        }
+  static get properties() {
+    return {
+      id: String,
+      success: Boolean
+    };
+  }
 
-        constructor() { super(); }
+  constructor() { super(); }
 
-        ready() {
-          super.ready();
-          this.$.status.setInfo('Unsubscribing...');
-          this.id = window.location.search.split('id=')[1];
-          if (!isNaN(this.id)) {
-              this.$.ajax.generateRequest();
-          } else {
-            this.$.status.setError('Could not unsubscribe. Please try again.');
-          }
-        }
+  ready() {
+    super.ready();
+    this.$.status.setInfo('Unsubscribing...');
+    this.id = window.location.search.split('id=')[1];
+    if (!isNaN(this.id)) {
+        this.$.ajax.generateRequest();
+    } else {
+      this.$.status.setError('Could not unsubscribe. Please try again.');
+    }
+  }
 
-        handleResponse(e, request) {
-          if (request.succeeded) {
-            this.$.status.setSuccess('Successfully unsubscribed!');
-          } else {
-            if (request.request.status=== 404) {
-              this.$.status.setWarning('This email address has already been unsubscribed, or was not found in the database.');
-            } else {
-              this.$.status.setError('Could not unsubscribe. Please try again.');
-            }
-          }
-        }
+  handleResponse(e, request) {
+    if (request.succeeded) {
+      this.$.status.setSuccess('Successfully unsubscribed!');
+    } else {
+      if (request.request.status=== 404) {
+        this.$.status.setWarning('This email address has already been unsubscribed, or was not found in the database.');
+      } else {
+        this.$.status.setError('Could not unsubscribe. Please try again.');
       }
+    }
+  }
+}
 
-      customElements.define(LancieUnsubscribe.is, LancieUnsubscribe);
-    })();
-  </script>
+customElements.define(LancieUnsubscribe.is, LancieUnsubscribe);
+</script>
 </dom-module>

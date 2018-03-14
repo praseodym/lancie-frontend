@@ -6,10 +6,10 @@
 
   <title>lancie-contact</title>
 
-  <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../../bower_components/web-component-tester/browser.js"></script>
+  <script src="../../../../../@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../../../web-component-tester/browser.js"></script>
 
-  <link rel="import" href="../../../src/lancie-contact/lancie-contact.html">
+  <script type="module" src="../../../src/lancie-contact/lancie-contact.js"></script>
 </head>
 
 <body>
@@ -20,60 +20,62 @@
     </template>
   </test-fixture>
 
-  <script>
-    suite('lancie-contact tests', function () {
-      let lancieContact, email, subject, message;
-      let server;
+  <script type="module">
+import '../../../src/lancie-contact/lancie-contact.js';
+import { Base } from '../../../../../@polymer/polymer/polymer.js';
+suite('lancie-contact tests', function () {
+  let lancieContact, email, subject, message;
+  let server;
 
-      setup(function () {
-        lancieContact = fixture('basic');
+  setup(function () {
+    lancieContact = fixture('basic');
 
-        email = 'user@mail.com';
-        subject = 'Testing lancie contact';
-        message = 'Testing lancie contact...';
+    email = 'user@mail.com';
+    subject = 'Testing lancie contact';
+    message = 'Testing lancie contact...';
 
-        lancieContact.email = email;
-        lancieContact.subject = subject;
-        // make sure message is long enough by repeating it a couple of times
-        lancieContact.message = new Array(10).join(message);
-      });
+    lancieContact.email = email;
+    lancieContact.subject = subject;
+    // make sure message is long enough by repeating it a couple of times
+    lancieContact.message = new Array(10).join(message);
+  });
 
-      test('instantiation works', function () {
-        assert.equal(lancieContact.is, 'lancie-contact');
-      });
+  test('instantiation works', function () {
+    assert.equal(lancieContact.is, 'lancie-contact');
+  });
 
-      function evaluateInvalidInputs(query, errorMessage, done) {
-        Polymer.Base.async(function () {
-          var valid = lancieContact.validateContact();
-          assert.isFalse(valid, 'input is invalid');
+  function evaluateInvalidInputs(query, errorMessage, done) {
+    Base.async(function () {
+      var valid = lancieContact.validateContact();
+      assert.isFalse(valid, 'input is invalid');
 
-          var err = lancieContact.shadowRoot.querySelector(query).errorMessage;
-          assert.equal(err, errorMessage);
-          done();
-        }, 1);
-      }
+      var err = lancieContact.shadowRoot.querySelector(query).errorMessage;
+      assert.equal(err, errorMessage);
+      done();
+    }, 1);
+  }
 
-      test('invalid mail', function (done) {
-        lancieContact.email = email.replace('@', '');
-        evaluateInvalidInputs('#email', 'Email should be valid.', done);
-      });
+  test('invalid mail', function (done) {
+    lancieContact.email = email.replace('@', '');
+    evaluateInvalidInputs('#email', 'Email should be valid.', done);
+  });
 
-      test('invalid subject', function (done) {
-        lancieContact.subject = 'four';
-        evaluateInvalidInputs('#subject', 'Subject too short.', done);
-      });
+  test('invalid subject', function (done) {
+    lancieContact.subject = 'four';
+    evaluateInvalidInputs('#subject', 'Subject too short.', done);
+  });
 
-      test('invalid message', function (done) {
-        lancieContact.message = 'short message';
-        evaluateInvalidInputs('#message', 'Message too short.', done);
-      });
+  test('invalid message', function (done) {
+    lancieContact.message = 'short message';
+    evaluateInvalidInputs('#message', 'Message too short.', done);
+  });
 
-      test('valid input', function () {
-        assert.isTrue(lancieContact.validateContact(), 'input is valid');
-      });
+  test('valid input', function () {
+    assert.isTrue(lancieContact.validateContact(), 'input is valid');
+  });
 
-    });
-  </script>
+});
+</script>
 </body>
 
 </html>

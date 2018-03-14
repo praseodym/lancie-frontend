@@ -7,20 +7,20 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/lancie-ajax/lancie-ajax.html">
-<link rel="import" href="../lancie-section/lancie-section.html">
-<link rel="import" href="../lancie-activity/lancie-activities.html">
-<link rel="import" href="../lancie-commission/lancie-commission.html">
-<link rel="import" href="../lancie-sponsors/lancie-sponsors.html">
-<link rel="import" href="../lancie-timeline/lancie-timeline.html">
-<link rel="import" href="../lancie-faq/lancie-faq.html">
-<link rel="import" href="../lancie-facebook/lancie-facebook.html">
-<link rel="import" href="../lancie-google-map/lancie-google-map.html">
-<link rel="import" href="../lancie-my-area/lancie-terms-of-service.html">
-<link rel="import" href="lancie-banner.html">
-<link rel="import" href="lancie-info-blocks.html">
-<link rel="import" href="lancie-subscribe-mail-form.html">
+<script type="module" src="../../../../@polymer/polymer/polymer.js"></script>
+<script type="module" src="../../../../lancie-ajax/lancie-ajax.js"></script>
+<script type="module" src="../lancie-section/lancie-section.js"></script>
+<script type="module" src="../lancie-activity/lancie-activities.js"></script>
+<script type="module" src="../lancie-commission/lancie-commission.js"></script>
+<script type="module" src="../lancie-sponsors/lancie-sponsors.js"></script>
+<script type="module" src="../lancie-timeline/lancie-timeline.js"></script>
+<script type="module" src="../lancie-faq/lancie-faq.js"></script>
+<script type="module" src="../lancie-facebook/lancie-facebook.js"></script>
+<script type="module" src="../lancie-google-map/lancie-google-map.js"></script>
+<script type="module" src="../lancie-my-area/lancie-terms-of-service.js"></script>
+<script type="module" src="./lancie-banner.js"></script>
+<script type="module" src="./lancie-info-blocks.js"></script>
+<script type="module" src="./lancie-subscribe-mail-form.js"></script>
 
 <dom-module id="lancie-home-page">
   <template>
@@ -227,41 +227,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </template>
 </dom-module>
-<script>
-  (() => {
-    'use strict';
+<script type="module">
+import '../../../../@polymer/polymer/polymer.js';
+import '../../../../lancie-ajax/lancie-ajax.js';
+import '../lancie-section/lancie-section.js';
+import '../lancie-activity/lancie-activities.js';
+import '../lancie-commission/lancie-commission.js';
+import '../lancie-sponsors/lancie-sponsors.js';
+import '../lancie-timeline/lancie-timeline.js';
+import '../lancie-faq/lancie-faq.js';
+import '../lancie-facebook/lancie-facebook.js';
+import '../lancie-google-map/lancie-google-map.js';
+import '../lancie-my-area/lancie-terms-of-service.js';
+import './lancie-banner.js';
+import './lancie-info-blocks.js';
+import './lancie-subscribe-mail-form.js';
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
 
-    class LancieHomePage extends Polymer.Element {
-      static get is() {
-        return 'lancie-home-page';
+class LancieHomePage extends Element {
+  static get is() {
+    return 'lancie-home-page';
+  }
+
+  static get properties() {
+    return {
+      opened: {
+        type: Boolean
+      },
+      markdownUrl: {
+        type: String,
+        value: 'data/markdown.md'
       }
+    };
+  }
 
-      static get properties() {
-        return {
-          opened: {
-            type: Boolean
-          },
-          markdownUrl: {
-            type: String,
-            value: 'data/markdown.md'
-          }
-        };
-      }
+  constructor() {
+    super();
+    this.addEventListener('show-terms-and-conditions', this.openDialog);
+  }
 
-      constructor() {
-        super();
-        this.addEventListener('show-terms-and-conditions', this.openDialog);
-      }
+  openDialog() {
+    this.$.termsOfService.open();
+  }
 
-      openDialog() {
-        this.$.termsOfService.open();
-      }
+  closeDialog() {
+    this.$.termsOfService.close();
+  }
+}
 
-      closeDialog() {
-        this.$.termsOfService.close();
-      }
-    }
-
-    customElements.define(LancieHomePage.is, LancieHomePage);
-  })();
+customElements.define(LancieHomePage.is, LancieHomePage);
 </script>

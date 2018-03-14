@@ -1,0 +1,64 @@
+import '../../../../@polymer/polymer/polymer-element.js';
+import { Polymer } from '../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+
+Polymer({
+  _template: `
+    <style>
+      :host {
+        display: block;
+      }
+
+      img {
+        object-fit: contain;
+        width: 210px;
+        height: 100%;
+        margin: 4px;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .vertical-flex {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .vertical-flex > div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    </style>
+
+    <div class="wrapper">
+      <div class="vertical-flex">
+        <h3>Presented by</h3>
+        <div>
+          <a href="https://ch.tudelft.nl" target="_blank" rel="noopener noreferrer"><img src="images-optimized/lancie/logo_CH.png"></a>
+          <a href="https://www.tudelft.nl" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/logo_SC.png"></a>
+        </div>
+      </div>
+      <div class="vertical-flex">
+        <h3>Premium sponsors</h3>
+        <div>
+          <a href="https://www.sogeti.nl/" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/sogeti.png"></a>
+          <a href="http://eu.coolermaster.com/en/" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/Cooler_Master_Logo.png"></a>
+          <a href="https://ogd.nl/" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/ogd.png"></a>
+        </div>
+        <h3>Sponsors</h3>
+        <div>
+          <a href="http://www.spam-energydrink.com/" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/spam-logo.jpg"></a>
+          <a href="https://prodrive-technologies.com/" target="_blank" rel="noopener noreferrer"><img id="prodriveLogo" src="images-optimized/logos/ProDrive.jpg"></a>
+          <a href="https://campzone.nl/?lang=en" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/campzone.png"></a>
+          <a href="https://www.nationaalvideogamemuseum.nl/" target="_blank" rel="noopener noreferrer"><img src="images-optimized/logos/NationaalVideogameMuseum.jpg"></a>
+        </div>
+      </div>
+    </div>
+`,
+
+  is: 'lancie-sponsors'
+});

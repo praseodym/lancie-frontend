@@ -8,9 +8,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../../bower_components/lancie-ajax/lancie-ajax.html">
-<link rel="import" href="../../bower_components/lancie-card/lancie-card.html">
+<script type="module" src="../../../../@polymer/iron-location/iron-location.js"></script>
+<script type="module" src="../../../../lancie-ajax/lancie-ajax.js"></script>
+<script type="module" src="../../../../lancie-card/lancie-card.js"></script>
 
 <dom-module id="lancie-register-confirm">
   <template>
@@ -45,57 +45,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </lancie-card>
 
   </template>
-  <script>
-  'use strict';
+  <script type="module">
+import '../../../../@polymer/iron-location/iron-location.js';
+import '../../../../lancie-ajax/lancie-ajax.js';
+import '../../../../lancie-card/lancie-card.js';
+import { Polymer } from '../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+'use strict';
 
-  (function() {
-    Polymer({
-      is: 'lancie-register-confirm',
-      properties: {
-        search: String,
-        nextAction: String,
-        query: String,
-        confirming: {
-          type: Boolean,
-          value: true
-        },
-        success: {
-          type: Boolean,
-          value: false
-        },
-        error: {
-          type: Boolean,
-          value: false
-        },
-        tokenTwice: {
-          type: Boolean,
-          value: false
-        }
-      },
+Polymer({
+  is: 'lancie-register-confirm',
+  properties: {
+    search: String,
+    nextAction: String,
+    query: String,
+    confirming: {
+      type: Boolean,
+      value: true
+    },
+    success: {
+      type: Boolean,
+      value: false
+    },
+    error: {
+      type: Boolean,
+      value: false
+    },
+    tokenTwice: {
+      type: Boolean,
+      value: false
+    }
+  },
 
-      attached: function() {
-        this.nextAction = (this.query.indexOf('orderId') > -1) ? 'tickets?login' : 'my-area';
-        this.tryConfirmRegistration();
-      },
+  attached: function() {
+    this.nextAction = (this.query.indexOf('orderId') > -1) ? 'tickets?login' : 'my-area';
+    this.tryConfirmRegistration();
+  },
 
-      tryConfirmRegistration: function() {
-        this.$.ajaxConfirmRegistration.generateRequest();
-      },
+  tryConfirmRegistration: function() {
+    this.$.ajaxConfirmRegistration.generateRequest();
+  },
 
-      onConfirmRegistration: function(e, response) {
-        // Such beauty Tour-De-France-code
-        this.confirming = false;
-        if (response.succeeded) {
-          this.success = true;
-        } else {
-          if (response.request.status === 404) {
-            this.error = true;
-          } else {
-            this.tokenTwice = true;
-          }
-        }
-      },
-    });
-  })();
-  </script>
+  onConfirmRegistration: function(e, response) {
+    // Such beauty Tour-De-France-code
+    this.confirming = false;
+    if (response.succeeded) {
+      this.success = true;
+    } else {
+      if (response.request.status === 404) {
+        this.error = true;
+      } else {
+        this.tokenTwice = true;
+      }
+    }
+  },
+});
+</script>
 </dom-module>

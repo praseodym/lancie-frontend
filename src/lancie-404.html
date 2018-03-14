@@ -1,4 +1,4 @@
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<script type="module" src="../../../@polymer/paper-card/paper-card.js"></script>
 
 <dom-module id="lancie-404">
   <template>
@@ -46,13 +46,12 @@
       </div>
     </paper-card>
   </template>
-  <script>
-  (function() {
-    'use strict';
+  <script type="module">
+import '../../../@polymer/paper-card/paper-card.js';
+import { Polymer } from '../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 
-    Polymer({
-      is: 'lancie-404'
-    });
-  })();
-  </script>
+Polymer({
+  is: 'lancie-404'
+});
+</script>
 </dom-module>

@@ -1,0 +1,33 @@
+'use strict';
+
+const observerOptions = {
+  rootMargin: '100px'
+};
+
+window.Lancie = window.Lancie || {};
+/**
+ * Mixin that allows you to lazy load content with `lazyCallback`
+ * @polymer
+ * @mixinFunction
+ */
+window.Lancie.lazyLoad = (clazz) => class extends clazz {
+  connectedCallback() {
+    super.connectedCallback();
+
+    const callback = (entries) => {
+      // The first load triggers the observer, but we are not yet fully
+      // loaded to show the image, thus we are not in view.
+      // Swallow this event by checking if we are actually intersecting
+      if (entries[0].isIntersecting) {
+        this.lazyCallback();
+      }
+    };
+
+    if (window.IntersectionObserver) {
+      const observer = new window.IntersectionObserver(callback, observerOptions);
+      observer.observe(this);
+    } else {
+      callback();
+    }
+  }
+};

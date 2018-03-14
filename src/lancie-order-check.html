@@ -1,8 +1,8 @@
-<link rel="import" href="../bower_components/iron-location/iron-location.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="lancie-section/lancie-section.html">
-<link rel="import" href="../bower_components/lancie-card/lancie-card.html">
-<link rel="import" href="../bower_components/lancie-ajax/lancie-ajax.html">
+<script type="module" src="../../../@polymer/iron-location/iron-location.js"></script>
+<script type="module" src="../../../@polymer/paper-button/paper-button.js"></script>
+<script type="module" src="./lancie-section/lancie-section.js"></script>
+<script type="module" src="../../../lancie-card/lancie-card.js"></script>
+<script type="module" src="../../../lancie-ajax/lancie-ajax.js"></script>
 
 <dom-module id="lancie-order-check">
   <template>
@@ -42,73 +42,76 @@
       </div>
     </lancie-card>
   </template>
-  <script>
-  (function() {
-    'use strict';
+  <script type="module">
+import '../../../@polymer/iron-location/iron-location.js';
+import '../../../@polymer/paper-button/paper-button.js';
+import './lancie-section/lancie-section.js';
+import '../../../lancie-card/lancie-card.js';
+import '../../../lancie-ajax/lancie-ajax.js';
+import { Polymer } from '../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 
-    Polymer({
-      is: 'lancie-order-check',
-      properties: {
-        orderId: String,
-        query: Object,
-        token: String,
-        confirming: {
-          type: Boolean,
-          value: true
-        },
-        success: {
-          type: Boolean,
-          value: false
-        },
-        error: {
-          type: Boolean,
-          value: false
-        },
-        cancelled: {
-          type: Boolean,
-          value: false
-        },
-        waiting: {
-          type: Boolean,
-          value: false
-        }
-      },
-      observers: [
-        'hasData(token, query)',
-      ],
+Polymer({
+  is: 'lancie-order-check',
+  properties: {
+    orderId: String,
+    query: Object,
+    token: String,
+    confirming: {
+      type: Boolean,
+      value: true
+    },
+    success: {
+      type: Boolean,
+      value: false
+    },
+    error: {
+      type: Boolean,
+      value: false
+    },
+    cancelled: {
+      type: Boolean,
+      value: false
+    },
+    waiting: {
+      type: Boolean,
+      value: false
+    }
+  },
+  observers: [
+    'hasData(token, query)',
+  ],
 
-      hasData: function(token, query) {
-        this.orderId = query.split('order=')[1];
-        if (!!token && !!this.orderId) {
-          this.$.ajaxConfirmOrder.generateRequest();
-        }
-      },
+  hasData: function(token, query) {
+    this.orderId = query.split('order=')[1];
+    if (!!token && !!this.orderId) {
+      this.$.ajaxConfirmOrder.generateRequest();
+    }
+  },
 
-      onResponse: function(e, request) {
-        this.confirming = false;
-        if (request.succeeded) {
-          switch (request.response.object.status) {
-            case 'PAID':
-              this.success = true;
-              break;
-            case 'CANCELLED':
-              this.cancelled = true;
-              break;
-            case 'WAITING':
-              this.waiting = true;
-              break;
-            default:
-              this.error = true;
-          }
-        } else {
+  onResponse: function(e, request) {
+    this.confirming = false;
+    if (request.succeeded) {
+      switch (request.response.object.status) {
+        case 'PAID':
+          this.success = true;
+          break;
+        case 'CANCELLED':
+          this.cancelled = true;
+          break;
+        case 'WAITING':
+          this.waiting = true;
+          break;
+        default:
           this.error = true;
-        }
-      },
-
-      openMyArea: function() {
-        this.fire('navigate', {page: 'my-area'});
       }
-    });
-  })();
-  </script>
+    } else {
+      this.error = true;
+    }
+  },
+
+  openMyArea: function() {
+    this.fire('navigate', {page: 'my-area'});
+  }
+});
+</script>
 </dom-module>

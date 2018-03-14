@@ -1,11 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="my-area-profile.html">
-<link rel="import" href="my-area-teams.html">
-<link rel="import" href="my-area-orders.html">
-<link rel="import" href="my-area-seat.html">
-<link rel="import" href="my-area-discord.html">
-<link rel="import" href="../lancie-section/lancie-section.html">
+<script type="module" src="../../../../@polymer/polymer/polymer.js"></script>
+<script type="module" src="../../../../@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+<script type="module" src="./my-area-profile.js"></script>
+<script type="module" src="./my-area-teams.js"></script>
+<script type="module" src="./my-area-orders.js"></script>
+<script type="module" src="./my-area-seat.js"></script>
+<script type="module" src="./my-area-discord.js"></script>
+<script type="module" src="../lancie-section/lancie-section.js"></script>
 <dom-module id="lancie-my-area">
   <template>
     <style include="iron-flex iron-flex-alignment iron-flex-factors"></style>
@@ -44,14 +44,23 @@
       </div>
     </lancie-section>
   </template>
-  <script>
-  Polymer({
-    is: 'lancie-my-area',
-    properties: {
-      user: {
-        type: Object
-      }
+  <script type="module">
+import '../../../../@polymer/polymer/polymer.js';
+import '../../../../@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import './my-area-profile.js';
+import './my-area-teams.js';
+import './my-area-orders.js';
+import './my-area-seat.js';
+import './my-area-discord.js';
+import '../lancie-section/lancie-section.js';
+import { Polymer } from '../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+Polymer({
+  is: 'lancie-my-area',
+  properties: {
+    user: {
+      type: Object
     }
-  });
-  </script>
+  }
+});
+</script>
 </dom-module>

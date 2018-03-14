@@ -3,15 +3,15 @@
 Copyright (c) 2015 The LANcie commission of W.I.S.V `Christiaan Huygens`. All rights reserved.
 This code may only be used under the BSD style license found at https://github.com/WISVCH/LANcie/blob/master/LICENSE
 -->
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/lancie-ajax/lancie-ajax.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/lancie-dialog/lancie-dialog.html">
-<link rel="import" href="lancie-seat.html">
-<link rel="import" href="../lancie-icons.html">
+<script type="module" src="../../../../@polymer/polymer/polymer.js"></script>
+<script type="module" src="../../../../@polymer/iron-icon/iron-icon.js"></script>
+<script type="module" src="../../../../lancie-ajax/lancie-ajax.js"></script>
+<script type="module" src="../../../../@polymer/paper-input/paper-input.js"></script>
+<script type="module" src="../../../../@polymer/paper-item/paper-item.js"></script>
+<script type="module" src="../../../../@polymer/neon-animation/web-animations.js"></script>
+<script type="module" src="../../../../lancie-dialog/lancie-dialog.js"></script>
+<script type="module" src="./lancie-seat.js"></script>
+<script type="module" src="../lancie-icons.js"></script>
 
 
 <dom-module id="lancie-seatmap">
@@ -176,116 +176,126 @@ This code may only be used under the BSD style license found at https://github.c
     </div>
   </lancie-dialog>
   </template>
-  <script>
-    class LancieSeatmap extends Polymer.Element {
-      static get is() {
-        return 'lancie-seatmap';
-      }
+  <script type="module">
+import '../../../../@polymer/polymer/polymer.js';
+import '../../../../@polymer/iron-icon/iron-icon.js';
+import '../../../../lancie-ajax/lancie-ajax.js';
+import '../../../../@polymer/paper-input/paper-input.js';
+import '../../../../@polymer/paper-item/paper-item.js';
+import '../../../../@polymer/neon-animation/web-animations.js';
+import '../../../../lancie-dialog/lancie-dialog.js';
+import './lancie-seat.js';
+import '../lancie-icons.js';
+import { Element } from '../../../../@polymer/polymer/polymer-element.js';
+class LancieSeatmap extends Element {
+  static get is() {
+    return 'lancie-seatmap';
+  }
 
-      static get properties() {
-        return {
-          user: Object,
-          seats: {
-            type: Array,
-            value: () => [],
-          },
-          seatToReserve: Object,
-          tickets: {
-            type: Array,
-            value: () => [],
-          },
-          fixed: {
-            type: Boolean,
-            notify: true
-          },
-          seatGroups: Array
-        };
-      }
+  static get properties() {
+    return {
+      user: Object,
+      seats: {
+        type: Array,
+        value: () => [],
+      },
+      seatToReserve: Object,
+      tickets: {
+        type: Array,
+        value: () => [],
+      },
+      fixed: {
+        type: Boolean,
+        notify: true
+      },
+      seatGroups: Array
+    };
+  }
 
-      ready() {
-        super.ready();
-        this.addEventListener('request-seat-reserve', (e) => this.openReservationDialog(e));
-      }
+  ready() {
+    super.ready();
+    this.addEventListener('request-seat-reserve', (e) => this.openReservationDialog(e));
+  }
 
-      refreshSeats() {
-        this.dispatchEvent(new CustomEvent('toast', {
-          detail: {text: 'Seat reservation succeeded!', duration: 3000},
-          bubbles: true,
-          composed: true
-        }));
-        this.$.ajaxGetAllSeats.generateRequest();
-      }
+  refreshSeats() {
+    this.dispatchEvent(new CustomEvent('toast', {
+      detail: {text: 'Seat reservation succeeded!', duration: 3000},
+      bubbles: true,
+      composed: true
+    }));
+    this.$.ajaxGetAllSeats.generateRequest();
+  }
 
-      onGetAllSeats(e, request) {
-        if (!request.succeeded) {
-          this.dispatchEvent(new CustomEvent('toast', {
-            detail: {text: 'Something went wrong, please refresh the page!', duration: 8000},
-            bubbles: true,
-            composed: true
-          }));
-          return;
-        }
-        const seatMap = request.response.seatmap;
-        const groups = Object.keys(seatMap);
-        this.set('seatGroups', groups);
+  onGetAllSeats(e, request) {
+    if (!request.succeeded) {
+      this.dispatchEvent(new CustomEvent('toast', {
+        detail: {text: 'Something went wrong, please refresh the page!', duration: 8000},
+        bubbles: true,
+        composed: true
+      }));
+      return;
+    }
+    const seatMap = request.response.seatmap;
+    const groups = Object.keys(seatMap);
+    this.set('seatGroups', groups);
 
-        let seats = groups.map(x => seatMap[x]);
-        for (let group of seats) {
-          group.sort((a, b) => a.seatNumber - b.seatNumber);
-        }
-
-        this.seats = seats;
-      }
-
-      onGetTeamTickets(e, request) {
-        if (!request.succeeded) {
-          this.dispatchEvent(new CustomEvent('refreshToast', {bubbles: true, composed: true}));
-          return;
-        }
-        this.set('tickets', request.response);
-      }
-
-      reserveSeat() {
-        this.$.error.clear();
-        if (!this.$.listbox.selectedItem) {
-          this.$.error.setError('Please select a user.');
-          return;
-        }
-        const seat = this.seatToReserve;
-        const ticket = this.$.listbox.selectedItem.dataset.ticket;
-        this.$.ajaxReserveSeat.refurl = `seats/${seat.seatGroup}/${seat.seatNumber}/${ticket}`;
-        this.$.ajaxReserveSeat.generateRequest();
-      }
-
-      onReserveSeat(e, request) {
-        if (request.succeeded) {
-          this.$.listbox.selected = undefined;
-          this.refreshSeats();
-          this.$.seatDialog.close();
-        } else {
-          if (request.request.status === 409) {
-            this.$.error.setError('Seat is already taken.');
-          } else {
-            this.$.error.setError('Something went wrong, please refresh and try again.');
-          }
-        }
-      }
-
-      openReservationDialog(event) {
-        this.seatToReserve = event.detail.seatToReserve;
-        this.$.error.clear();
-        this.$.seatDialog.open();
-      }
-
-      _getSeatGroup(seats, group) {
-        return seats[this.seatGroups.indexOf(group)];
-      }
-
-      _checkExists(tickets) {
-        return tickets.filter(ticket => ticket.valid === true).length > 0;
-      }
+    let seats = groups.map(x => seatMap[x]);
+    for (let group of seats) {
+      group.sort((a, b) => a.seatNumber - b.seatNumber);
     }
 
-    customElements.define(LancieSeatmap.is, LancieSeatmap);
-  </script>
+    this.seats = seats;
+  }
+
+  onGetTeamTickets(e, request) {
+    if (!request.succeeded) {
+      this.dispatchEvent(new CustomEvent('refreshToast', {bubbles: true, composed: true}));
+      return;
+    }
+    this.set('tickets', request.response);
+  }
+
+  reserveSeat() {
+    this.$.error.clear();
+    if (!this.$.listbox.selectedItem) {
+      this.$.error.setError('Please select a user.');
+      return;
+    }
+    const seat = this.seatToReserve;
+    const ticket = this.$.listbox.selectedItem.dataset.ticket;
+    this.$.ajaxReserveSeat.refurl = `seats/${seat.seatGroup}/${seat.seatNumber}/${ticket}`;
+    this.$.ajaxReserveSeat.generateRequest();
+  }
+
+  onReserveSeat(e, request) {
+    if (request.succeeded) {
+      this.$.listbox.selected = undefined;
+      this.refreshSeats();
+      this.$.seatDialog.close();
+    } else {
+      if (request.request.status === 409) {
+        this.$.error.setError('Seat is already taken.');
+      } else {
+        this.$.error.setError('Something went wrong, please refresh and try again.');
+      }
+    }
+  }
+
+  openReservationDialog(event) {
+    this.seatToReserve = event.detail.seatToReserve;
+    this.$.error.clear();
+    this.$.seatDialog.open();
+  }
+
+  _getSeatGroup(seats, group) {
+    return seats[this.seatGroups.indexOf(group)];
+  }
+
+  _checkExists(tickets) {
+    return tickets.filter(ticket => ticket.valid === true).length > 0;
+  }
+}
+
+customElements.define(LancieSeatmap.is, LancieSeatmap);
+</script>
 </dom-module>
